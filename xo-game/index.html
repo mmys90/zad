@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>XO Paper Game</title>
+  <meta name="description" content="Tic-tac-toe on graph paper. Play the computer on three levels or a friend on the same phone.">
+  <meta name="theme-color" content="#f6f8fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1c2925" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="XO">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Safe-area padding for phones running the installed app full screen. */
+    :root { padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  </style>
+</head>
+<body>
+<!-- app:start -->
+<main class="app" id="app">
+
+  <!-- Home -->
+  <section class="screen" id="home" aria-labelledby="logo">
+    <header class="masthead">
+      <h1 class="logo" id="logo"><span class="lx">X</span><span class="lo">O</span></h1>
+      <p class="tagline">Tic-tac-toe on graph paper. Three in a row wins.</p>
+    </header>
+
+    <div>
+      <p class="section-label" id="mode-label">Who are you playing?</p>
+      <div class="modes" role="group" aria-labelledby="mode-label">
+        <button class="mode" id="mode-cpu" type="button" data-mode="cpu" aria-pressed="true">
+          <svg class="mode-icon" viewBox="0 0 44 44" aria-hidden="true">
+            <rect x="7" y="11" width="30" height="24" rx="6" fill="none" stroke="currentColor" stroke-width="2.5"/>
+            <path d="M22 11V5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="22" cy="4.5" r="2.2" fill="currentColor"/>
+            <path d="M14 20l5 5M19 20l-5 5" stroke="var(--x)" stroke-width="2.6" stroke-linecap="round"/>
+            <circle cx="28.5" cy="22.5" r="3.6" fill="none" stroke="var(--o)" stroke-width="2.6"/>
+          </svg>
+          <span class="mode-title">Computer</span>
+          <span class="mode-sub">Single player, three levels</span>
+        </button>
+        <button class="mode" id="mode-pvp" type="button" data-mode="pvp" aria-pressed="false">
+          <svg class="mode-icon" viewBox="0 0 44 44" aria-hidden="true">
+            <circle cx="14" cy="14" r="5.5" fill="none" stroke="var(--x)" stroke-width="2.5"/>
+            <path d="M4 35c0-6.5 4.5-11 10-11s10 4.5 10 11" fill="none" stroke="var(--x)" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="30" cy="14" r="5.5" fill="none" stroke="var(--o)" stroke-width="2.5"/>
+            <path d="M20 35c0-6.5 4.5-11 10-11s10 4.5 10 11" fill="none" stroke="var(--o)" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <span class="mode-title">Two players</span>
+          <span class="mode-sub">Pass the phone, take turns</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-cpu">
+      <div class="field">
+        <p class="section-label" id="level-label">Difficulty</p>
+        <div class="seg" role="group" aria-labelledby="level-label">
+          <button type="button" id="level-easy" data-level="easy">Easy</button>
+          <button type="button" id="level-medium" data-level="medium">Medium</button>
+          <button type="button" id="level-hard" data-level="hard">Hard</button>
+        </div>
+        <p class="hint" id="level-hint"></p>
+      </div>
+      <div class="field">
+        <p class="section-label" id="mark-label">You play</p>
+        <div class="seg" role="group" aria-labelledby="mark-label">
+          <button type="button" id="mark-x" data-mark="X"><span class="mk mk-x">X</span></button>
+          <button type="button" id="mark-o" data-mark="O"><span class="mk mk-o">O</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-pvp" hidden>
+      <div class="field">
+        <p class="section-label">Names</p>
+        <div class="names">
+          <label class="name-input" for="name-p1">
+            <span>Plays <b style="color:var(--x)">X</b></span>
+            <input id="name-p1" type="text" maxlength="14" autocomplete="off" placeholder="Player 1">
+          </label>
+          <label class="name-input" for="name-p2">
+            <span>Plays <b style="color:var(--o)">O</b></span>
+            <input id="name-p2" type="text" maxlength="14" autocomplete="off" placeholder="Player 2">
+          </label>
+        </div>
+        <p class="hint">X and O take turns going first each round.</p>
+      </div>
+    </div>
+
+    <button class="primary" id="start" type="button">Start game</button>
+
+    <div class="install" id="install" hidden>
+      <span id="install-text">Install XO to play offline from your home screen.</span>
+      <button type="button" id="install-btn">Install</button>
+    </div>
+  </section>
+
+  <!-- Game -->
+  <section class="screen" id="game" hidden aria-label="Game">
+    <div class="topbar">
+      <button class="icon-btn" id="back" type="button" aria-label="Back to menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="topbar-title">
+        <strong id="game-title">Computer</strong>
+        <span id="round-label">Round 1</span>
+      </div>
+      <button class="icon-btn" id="sound" type="button" aria-pressed="true" aria-label="Sound">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path id="sound-waves" d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path id="sound-off" d="M16 9.5l5 5M21 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" hidden/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="scores">
+      <div class="score" id="score-p1" data-mark="X">
+        <span class="score-name" id="score-p1-name">You</span>
+        <span class="score-mark" id="score-p1-mark">X</span>
+        <span class="score-num" id="score-p1-num">0</span>
+      </div>
+      <div class="score draws">
+        <span class="score-name">Draws</span>
+        <span class="score-mark" aria-hidden="true">&nbsp;</span>
+        <span class="score-num" id="score-draw-num">0</span>
+      </div>
+      <div class="score" id="score-p2" data-mark="O">
+        <span class="score-name" id="score-p2-name">Computer</span>
+        <span class="score-mark" id="score-p2-mark">O</span>
+        <span class="score-num" id="score-p2-num">0</span>
+      </div>
+    </div>
+
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+
+    <div class="board-wrap">
+      <div class="board" id="board">
+        <svg class="layer" id="grid" viewBox="0 0 300 300" aria-hidden="true"></svg>
+        <div class="cells" id="cells" role="grid" aria-label="Board"></div>
+        <svg class="layer" id="strike-layer" viewBox="0 0 300 300" aria-hidden="true"></svg>
+      </div>
+    </div>
+
+    <div class="actions" id="actions">
+      <button class="btn" id="undo" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 010 11H11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Undo
+      </button>
+      <button class="btn solid" id="next" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 11-2.4-5.7M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="next-label">New round</span>
+      </button>
+      <button class="reset-link" id="reset" type="button">Reset score</button>
+      <div class="confirm" id="confirm" hidden>
+        <span>Clear the score for this matchup?</span>
+        <button type="button" class="danger" id="confirm-yes">Clear</button>
+        <button type="button" id="confirm-no">Keep</button>
+      </div>
+    </div>
+  </section>
+</main>
+<!-- app:end -->
+<script src="xo-core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
