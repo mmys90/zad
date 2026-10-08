@@ -14,7 +14,8 @@ works offline.
 - **Two players**: pass-and-play on one device, with editable names.
 
 X and O take turns going first each round. Scores are kept per matchup
-(each difficulty, and two players) and survive closing the app.
+(each difficulty, and two players) and survive closing the app. **Reset score**
+under the board sets the current matchup back to 0 after you confirm.
 
 Controls: tap a square, or use arrow keys and 1-9 (top-left to bottom-right).
 Undo takes back the last move (against the computer, your move and its reply).

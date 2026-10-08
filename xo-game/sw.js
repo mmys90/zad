@@ -1,7 +1,7 @@
 /* Offline support: the app shell is cached on install and served cache-first.
  * Fonts are cached as they load, so they also work offline after first use.
  * Bump VERSION whenever a shell file changes. */
-var VERSION = 'xo-v1';
+var VERSION = 'xo-v2';
 var SHELL = [
   './',
   'index.html',

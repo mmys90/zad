@@ -342,6 +342,7 @@
     game.lastMove = -1; // animate a mark only once
 
     $('undo').disabled = !canUndo();
+    $('reset').disabled = s.p1 + s.p2 + s.draw === 0;
     $('next-label').textContent = game.result ? 'Next round' : 'Restart round';
   }
 
@@ -406,7 +407,15 @@
   $('next').addEventListener('click', function () {
     if (game.result) nextRound(); else restartRound();
   });
-  $('reset').addEventListener('click', function () { $('reset').hidden = true; $('confirm').hidden = false; $('confirm-yes').focus(); });
+  // Reset asks first, since a stray tap would otherwise wipe a long match.
+  $('reset').addEventListener('click', function () {
+    $('confirm-text').textContent = settings.mode === 'cpu'
+      ? 'Set your score against ' + LEVEL_NAMES[settings.level] + ' back to 0?'
+      : 'Set ' + nameOf('p1') + ' vs ' + nameOf('p2') + ' back to 0?';
+    $('reset').hidden = true;
+    $('confirm').hidden = false;
+    $('confirm-yes').focus();
+  });
   $('confirm-no').addEventListener('click', function () { $('confirm').hidden = true; $('reset').hidden = false; });
   $('confirm-yes').addEventListener('click', function () {
     scores[scoreKey()] = { p1: 0, p2: 0, draw: 0 };
@@ -414,6 +423,7 @@
     $('confirm').hidden = true;
     $('reset').hidden = false;
     render();
+    $('next').focus();
   });
 
   $('cells').addEventListener('click', function (e) {

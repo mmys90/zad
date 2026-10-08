@@ -278,17 +278,18 @@ button { cursor: pointer; }
 .btn svg { width: 18px; height: 18px; flex: none; }
 .btn:disabled { opacity: 0.45; cursor: default; }
 .btn.solid { background: var(--ink); border-color: var(--ink); color: var(--paper); }
-.reset-link {
-  justify-self: center; grid-column: 1 / -1;
-  border: 0; background: transparent; color: var(--muted);
-  font-size: 0.85rem; text-decoration: underline; text-underline-offset: 3px; padding: 4px 8px;
-}
+.btn.wide { grid-column: 1 / -1; color: var(--muted); }
 .confirm {
   grid-column: 1 / -1;
-  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px;
-  font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--o);
+  border-radius: var(--radius);
+  background: var(--o-soft);
+  font-size: 0.9rem; font-weight: 700;
 }
-.confirm button { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--rule); background: var(--sheet); font-weight: 700; }
+.confirm span { flex: 1 1 100%; min-width: 0; text-align: center; }
+.confirm button { padding: 6px 16px; border-radius: 999px; border: 1px solid var(--rule); background: var(--sheet); font-weight: 700; }
 .confirm .danger { background: var(--o); border-color: var(--o); color: var(--sheet); }
 
 .thinking::after { content: ""; display: inline-block; width: 1.2em; text-align: left; animation: dots 1s steps(4) infinite; }
