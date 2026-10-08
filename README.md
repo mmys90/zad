@@ -88,3 +88,8 @@ style attributes, and byte-integrity of binaries. No network access needed.
   to post.
 - `robots.txt` is not consulted. Check that you have the right to mirror a site,
   and use `--delay` to avoid hammering it.
+
+---
+
+This repo also holds **[XO Paper Game](xo-game/)**, a tic-tac-toe app with
+single-player (vs computer) and two-player modes. See `xo-game/README.md`.
